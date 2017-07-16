@@ -21,7 +21,7 @@
 
 // Abstraction layer between os (windows.h) and this namespace
 // Msgbox is used in error handling
-#include "msgbox.h"
+#include "msgbox_SGL.h"
 
 
 // Loading names
@@ -247,6 +247,8 @@ void initGL(int w , int h)
 
 	glEnable(GL_TEXTURE_2D);                                                    // texturing
 
+	glDisable(GL_LIGHTING);														// There's no need of lighting
+
     glEnable( GL_BLEND );	                                                	// blending
 
 	glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );                        // blending func
@@ -264,8 +266,6 @@ void initGL(int w , int h)
 	glAlphaFunc ( GL_GREATER, 0.1 ) ;                                           // Alpha func
 
 	glPointSize(1);                                                           	// Default point size
-
-	glEnable(GL_LINE_SMOOTH);													// Line smoothing
 
 
 	// Next loading font
@@ -592,6 +592,41 @@ void text(float x , float y , char * t)
 
   if(doublebuffered == false)
   glFlush();
+}
+
+// Drawing 2D rgb buffer ( x,y -> left down corner; width,height -> dimmensions; buff_w,buff_h -> buffer dimmensions)
+void rgb_buffer(float x, float y, float width, float height, int buff_w, int buff_h, int * buffer)
+{
+	GLuint texture_id;
+
+	glGenTextures(1, &texture_id);
+	glBindTexture(GL_TEXTURE_2D, texture_id);
+
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	glTexImage2D(GL_TEXTURE_2D,0,GL_RGB,buff_w,buff_h,0,GL_RGB,GL_UNSIGNED_BYTE,buffer);
+
+	glColor3f(1, 1, 1);
+
+	glBegin(GL_QUADS);
+
+	glTexCoord2f(0, 0);
+	glVertex3f(x, y, currentlayer);
+
+	glTexCoord2f(1, 0);
+	glVertex3f(x + width, y, currentlayer);
+
+	glTexCoord2f(1, 1);
+	glVertex3f(x + width, y +  height, currentlayer);
+
+	glTexCoord2f(0, 1);
+	glVertex3f(x, y + height, currentlayer);
+
+	glEnd();
+
+	glDeleteTextures(1, &texture_id);
 }
 
 // Clearing screnn with ClearColor

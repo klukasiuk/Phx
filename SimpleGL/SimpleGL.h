@@ -29,8 +29,8 @@
 
 #pragma once
 
-#include "input.h"
-#include "color.h"
+#include "input_SGL.h"
+#include "color_SGL.h"
 
 // Window maintence
 
@@ -138,7 +138,10 @@ void polygon( float * x , float * y , int n);
 // Drawing text in given place
 void text(float x , float y , char * t);
 
-// Clearing screnn with ClearColor
+// Drawing 2D rgb buffer ( x,y -> left down corner; width,height -> dimmensions; buff_w,buff_h -> buffer dimmensions)
+void rgb_buffer(float x, float y, float width, float height, int buff_w, int buff_h, int * buffer);
+
+// Clearing screen with ClearColor
 void clear();
 
 // Sets RGB color ( 0 - 255 )
