@@ -49,11 +49,48 @@ void createSandbox()
 	phx.AddBody(new Body(false,628,280,0,new Poly(tab, 4),&test1));
 }
 
+void create_joint_test()
+{
+	phx.AddBody(new Body(false,100,240,0,new Circle(20),&test1));
+	phx.AddBody(new Body(true,150,240,0,new Circle(20),&test1));
+	phx.AddBody(new Body(true,200,240,0,new Circle(20),&test1));
+	phx.AddBody(new Body(true,250,240,0,new Circle(20),&test1));
+	phx.AddBody(new Body(true,300,240,0,new Circle(20),&test1));
+	phx.AddBody(new Body(true,350,240,0,new Circle(20),&test1));
+	phx.AddBody(new Body(true,400,240,0,new Circle(20),&test1));
+	phx.AddBody(new Body(false,450,240,0,new Circle(20),&test1));
+
+	int z = phx.BodyList.size();
+
+	phx.Joints.push_back(new Joint(phx.BodyList[z - 8], Vec2(10, 0), phx.BodyList[z - 7], Vec2(-10, 0), 30));
+	phx.Joints.push_back(new Joint(phx.BodyList[z - 7], Vec2(10, 0), phx.BodyList[z - 6], Vec2(-10, 0), 30));
+	phx.Joints.push_back(new Joint(phx.BodyList[z - 6], Vec2(10, 0), phx.BodyList[z - 5], Vec2(-10, 0), 30));
+	phx.Joints.push_back(new Joint(phx.BodyList[z - 5], Vec2(10, 0), phx.BodyList[z - 4], Vec2(-10, 0), 30));
+	phx.Joints.push_back(new Joint(phx.BodyList[z - 4], Vec2(10, 0), phx.BodyList[z - 3], Vec2(-10, 0), 30));
+	phx.Joints.push_back(new Joint(phx.BodyList[z - 3], Vec2(10, 0), phx.BodyList[z - 2], Vec2(-10, 0), 30));
+	phx.Joints.push_back(new Joint(phx.BodyList[z - 2], Vec2(10, 0), phx.BodyList[z - 1], Vec2(-10, 0), 30));
+}
+
 // Function called every time key was pressed
 void myKeyboardCallback(KeyboardKey key, InputAction action)
 {
+	if (key == Key_Escape && action == Pressed)
+		run = false;
+
 	if (key == Key_Space && action == Pressed)
 		simulation = !simulation;
+
+	if (key == Key_P && action == Pressed)
+		phx.DebugDraw = !phx.DebugDraw;
+
+	if (key == Key_G && action == Pressed)
+		phx.gravitation = !phx.gravitation;
+
+	if(key == Key_F && action == Pressed)
+		phx.friction = !phx.friction;
+
+	if (key == Key_V && action == Pressed)
+		create_joint_test();
 }
 
 // Function called every time mouse button was pressed
