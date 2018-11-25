@@ -1,7 +1,7 @@
 # Phx
 
 This is my high school project involving creating basic 2D physics engine with graphical presentation.
-Collision resolving is based on impulse method.
+Collision resolving is based on impulse method. Drawing is made with my SimpleGL lib.
 
 ![Screenshot](Images/screenshot.PNG)
 
